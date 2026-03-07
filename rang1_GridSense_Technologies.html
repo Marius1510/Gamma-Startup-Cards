@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GridSense Technologies · VCAS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #0f2044; --blue: #1e4fd8; --blue-lt: #e8eefb;
+  --green: #15803d; --green-bg: #f0fdf4;
+  --amber: #92400e; --amber-bg: #fffbeb;
+  --slate: #475569; --slate-lt: #94a3b8; --line: #e2e8f0;
+  --bg: #f8fafc; --white: #ffffff; --text: #1e293b;
+}
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 2rem 1.5rem;
+}
+.card {
+  width: 100%; max-width: 900px;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 24px rgba(15,32,68,.10), 0 1px 4px rgba(15,32,68,.06);
+  overflow: hidden;
+}
+.header {
+  background: var(--navy); padding: 18px 24px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 16px;
+}
