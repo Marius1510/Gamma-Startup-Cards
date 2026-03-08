@@ -4,33 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GridSense Technologies · VCAS</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy: #0f2044; --blue: #1e4fd8; --blue-lt: #e8eefb;
-  --green: #15803d; --green-bg: #f0fdf4;
-  --amber: #92400e; --amber-bg: #fffbeb;
-  --slate: #475569; --slate-lt: #94a3b8; --line: #e2e8f0;
-  --bg: #f8fafc; --white: #ffffff; --text: #1e293b;
-}
-body {
-  font-family: 'IBM Plex Sans', sans-serif;
-  background: var(--bg);
-  min-height: 100vh;
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 2rem 1.5rem;
-}
-.card {
-  width: 100%; max-width: 900px;
-  background: var(--white);
-  border-radius: 12px;
-  box-shadow: 0 2px 24px rgba(15,32,68,.10), 0 1px 4px rgba(15,32,68,.06);
-  overflow: hidden;
-}
-.header {
-  background: var(--navy); padding: 18px 24px;
-  display: grid; grid-template-columns: auto 1fr auto;
-  align-items: center; gap: 16px;
-}
+<style>@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#0a1628;--blue:#1a3a6b;--accent:#2d6ef7;--gold:#c9a227;--green:#16a34a;--amber:#d97706;--red:#dc2626;--muted:#8899bb;--border:rgba(45,110,247,0.15);}
+html,body{background:var(--navy);color:#e8edf8;font-family:'DM Mono',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;}
+.card{background:linear-gradient(160deg,#0f2040 0%,#0a1628 70%);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:relative;max-width:480px;width:100%;}
+.card-scorebar{height:5px;background:var(--navy);}
+.card-scorebar-fill{height:100%;border-radius:0 3px 3px 0;}
+.score-high{background:linear-gradient(90deg,#16a34a,#22c55e);}
+.score-mid{background:linear-gradient(90deg,#2d6ef7,#60a5fa);}
+.score-low{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.card-body{padding:24px;}
+.card-rank{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;background:rgba(45,110,247,0.12);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);}
+.card-rank.rank-1{background:rgba(201,162,39,0.15);border-color:var(--gold);color:var(--gold);}
+.card-sector{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;font-weight:500;}
+.card-name{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1.1;margin-bottom:3px;padding-right:52px;}
+.card-hq{font-size:10px;color:var(--muted);margin-bottom:16px;}
+.card-tagline{font-size:12px;color:#b8c8e0;line-height:1.6;margin-bottom:20px;}
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 4px 8px;}
+.score-item-value{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;line-height:1;}
+.score-item-value.total{font-size:24px;color:var(--gold);}
+.score-item-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;text-align:center;line-height:1.2;}
+.fit-bar-wrap{margin-bottom:14px;}
+.fit-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;}
+.fit-bar-label{font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);}
+.fit-bar-value{font-size:11px;color:#e8edf8;}
+.fit-bar-track{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.fit-bar-fill{height:100%;border-radius:3px;}
+.fit-fill-green{background:linear-gradient(90deg,#16a34a,#22c55e);}
+.fit-fill-blue{background:linear-gradient(90deg,#1d4ed8,#2d6ef7);}
+.fit-fill-sky{background:linear-gradient(90deg,#0284c7,#38bdf8);}
+.fit-fill-amber{background:linear-gradient(90deg,#b45309,#f59e0b);}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tag{font-size:9.5px;padding:3px 9px;border-radius:99px;}
+.tag-green{background:rgba(22,163,74,0.15);color:#4ade80;border:1px solid rgba(22,163,74,0.25);}
+.tag-amber{background:rgba(217,119,6,0.15);color:#fbbf24;border:1px solid rgba(217,119,6,0.25);}
+.tag-red{background:rgba(220,38,38,0.15);color:#f87171;border:1px solid rgba(220,38,38,0.25);}
+.tag-blue{background:rgba(45,110,247,0.15);color:#93c5fd;border:1px solid rgba(45,110,247,0.25);}
+.tag-muted{background:rgba(136,153,187,0.1);color:var(--muted);border:1px solid rgba(136,153,187,0.15);}
+.bullets{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.bullet{display:flex;gap:8px;align-items:flex-start;font-size:11px;line-height:1.5;color:#c8d8f0;}
+.bullet-icon{flex-shrink:0;font-size:12px;}
+.next-step{margin-top:16px;padding:12px 14px;background:rgba(45,110,247,0.08);border:1px solid rgba(45,110,247,0.18);border-radius:8px;font-size:10.5px;color:#93c5fd;line-height:1.5;}
+.next-step strong{color:#60a5fa;display:block;margin-bottom:3px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;}
+.card-footer{padding:10px 24px;border-top:1px solid var(--border);font-size:8.5px;color:rgba(136,153,187,0.4);letter-spacing:0.15em;text-transform:uppercase;}</style>
+</head>
+<body>
+<div class="card">
+<div class="card-scorebar"><div class="card-scorebar-fill score-high" style="width:82%"></div></div>
+<div class="card-body">
+<div class="card-rank rank-1">1</div>
+<div class="card-sector">KI · Lastmanagement · SCADA</div>
+<div class="card-name">GridSense Technologies</div>
+<div class="card-hq">📍 München, DE · Series B</div>
+<div class="card-tagline">KI-gestütztes Lastmanagement für industrielle Netze — spezialisiert auf Prozessindustrie &amp; SCADA.</div>
+<div class="score-row"><div class="score-item"><div class="score-item-value total">82</div><div class="score-item-label">Score /100</div></div><div class="score-item"><div class="score-item-value">37</div><div class="score-item-label">Lösungsfit /40</div></div><div class="score-item"><div class="score-item-value">22</div><div class="score-item-label">Umsetzung /25</div></div><div class="score-item"><div class="score-item-value">19</div><div class="score-item-label">Vertrauen /25</div></div></div>
+<div class="fit-bar-wrap"><div class="fit-bar-header"><span class="fit-bar-label">Lösungsfit</span><span class="fit-bar-value">37 / 40</span></div><div class="fit-bar-track"><div class="fit-bar-fill fit-fill-green" style="width:92.5%"></div></div></div>
+<div class="fit-bar-wrap"><div class="fit-bar-header"><span class="fit-bar-label">Marktvalidierung</span><span class="fit-bar-value">4 / 10</span></div><div class="fit-bar-track"><div class="fit-bar-fill fit-fill-amber" style="width:40%"></div></div></div>
+<div class="tags"><span class="tag tag-green">✓ ISO 27001</span><span class="tag tag-green">✓ SAP-Zertifiziert</span><span class="tag tag-green">✓ 2 DAX-Referenzen</span><span class="tag tag-amber">⚠ Runway unsicher</span></div>
+<ul class="bullets"><li class="bullet"><span class="bullet-icon">⚡</span>Einziger Kandidat mit SAP-Zertifizierung + Live-Referenz in Prozessindustrie</li><li class="bullet"><span class="bullet-icon">⚠</span>D08 Runway fehlt — Klärung erforderlich</li></ul>
+<div class="next-step"><strong>→ Next Step</strong>Demo anfragen · SAP-Integration + Pilotbedingungen klären</div>
+</div>
+<div class="card-footer">VCAS · Agent 2 · BCG Internal · 2025</div>
+</div>
+</body>
+</html>
