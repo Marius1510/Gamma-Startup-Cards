@@ -4,147 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PowerClaim · VCAS</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy: #0f2044; --blue: #1e4fd8; --blue-lt: #e8eefb;
-  --green: #15803d; --green-bg: #f0fdf4;
-  --amber: #92400e; --amber-bg: #fffbeb;
-  --slate: #475569; --slate-lt: #94a3b8; --line: #e2e8f0;
-  --bg: #f8fafc; --white: #ffffff; --text: #1e293b;
-}
-body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1.5rem; }
-.card { width: 100%; max-width: 900px; background: var(--white); border-radius: 12px; box-shadow: 0 2px 24px rgba(15,32,68,.10), 0 1px 4px rgba(15,32,68,.06); overflow: hidden; }
-.header { background: var(--navy); padding: 18px 24px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
-.rang { background: var(--blue); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 5px; white-space: nowrap; }
-.company-name { font-family: 'IBM Plex Serif', serif; color: #fff; font-size: 20px; font-weight: 600; }
-.header-meta { display: flex; gap: 10px; flex-wrap: wrap; color: rgba(255,255,255,.5); font-size: 11.5px; margin-top: 3px; }
-.header-meta a { color: rgba(255,255,255,.65); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.2); }
-.dot { color: rgba(255,255,255,.25); }
-.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.score-display { display: flex; align-items: baseline; gap: 3px; }
-.score-num { font-family: 'IBM Plex Serif', serif; color: #fff; font-size: 34px; font-weight: 600; line-height: 1; }
-.score-denom { color: rgba(255,255,255,.4); font-size: 13px; }
-.badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: #15803d; color: #fff; }
-.body { display: grid; grid-template-columns: 268px 1fr; border-bottom: 1px solid var(--line); }
-.left-col { background: #fafcff; border-right: 1px solid var(--line); padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-.section-label { font-size: 9px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--slate-lt); margin-bottom: 8px; }
-.radar-wrap { width: 100%; aspect-ratio: 1; max-width: 220px; margin: 0 auto; }
-.score-rows { display: flex; flex-direction: column; gap: 6px; }
-.score-row { display: flex; align-items: center; gap: 8px; }
-.sr-label { font-size: 11px; color: var(--slate); width: 108px; flex-shrink: 0; }
-.sr-track { flex: 1; height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; }
-.sr-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-.sr-val { font-size: 10.5px; font-weight: 600; color: var(--navy); width: 28px; text-align: right; }
-.right-col { padding: 20px 24px; display: flex; flex-direction: column; }
-.content-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
-.content-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.block-label { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--slate-lt); margin-bottom: 7px; display: flex; align-items: center; gap: 5px; }
-.block-text { font-size: 13px; line-height: 1.65; color: var(--text); }
-.einschaetzung-text { font-family: 'IBM Plex Serif', serif; font-size: 13.5px; line-height: 1.55; color: var(--navy); border-left: 3px solid var(--blue); padding-left: 12px; }
-.lf-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.lf-total-badge { font-size: 11px; font-weight: 700; color: var(--blue); background: var(--blue-lt); padding: 2px 9px; border-radius: 20px; }
-.lf-rows { display: flex; flex-direction: column; gap: 8px; }
-.lf-row { display: flex; align-items: center; gap: 0; }
-.lf-code { font-size: 9.5px; font-weight: 700; letter-spacing: .05em; color: var(--blue); width: 22px; flex-shrink: 0; }
-.lf-name { font-size: 11.5px; font-weight: 500; color: var(--text); width: 150px; flex-shrink: 0; }
-.lf-bar-wrap { flex: 0 0 70px; margin: 0 8px; }
-.lf-bar-track { height: 3px; background: var(--line); border-radius: 99px; overflow: hidden; }
-.lf-bar-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-.lf-score { font-size: 10.5px; font-weight: 700; color: var(--navy); width: 28px; text-align: right; flex-shrink: 0; }
-.lf-icon { font-size: 12px; width: 20px; text-align: center; flex-shrink: 0; padding: 0 2px; }
-.lf-note { font-size: 10.5px; color: var(--slate-lt); flex: 1; padding-left: 4px; font-style: italic; }
-.footer { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-.footer-cell { padding: 13px 18px; display: flex; flex-direction: column; gap: 4px; }
-.footer-cell + .footer-cell { border-left: 1px solid var(--line); }
-.fc-label { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.fc-text { font-size: 12px; line-height: 1.5; color: var(--text); }
-.fc-staerke { background: var(--green-bg); } .fc-staerke .fc-label { color: var(--green); }
-.fc-risiko  { background: var(--amber-bg); } .fc-risiko  .fc-label { color: var(--amber); }
-.fc-next    { background: var(--blue-lt);  } .fc-next    .fc-label { color: var(--blue);  }
-</style>
+<style>@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#0a1628;--blue:#1a3a6b;--accent:#2d6ef7;--gold:#c9a227;--green:#16a34a;--amber:#d97706;--red:#dc2626;--muted:#8899bb;--border:rgba(45,110,247,0.15);}
+html,body{background:var(--navy);color:#e8edf8;font-family:'DM Mono',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;}
+.card{background:linear-gradient(160deg,#0f2040 0%,#0a1628 70%);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:relative;max-width:480px;width:100%;}
+.card-scorebar{height:5px;background:var(--navy);}
+.card-scorebar-fill{height:100%;border-radius:0 3px 3px 0;}
+.score-high{background:linear-gradient(90deg,#16a34a,#22c55e);}
+.score-mid{background:linear-gradient(90deg,#2d6ef7,#60a5fa);}
+.score-low{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.card-body{padding:24px;}
+.card-rank{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;background:rgba(45,110,247,0.12);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:18px;color:var(--accent);}
+.card-rank.rank-1{background:rgba(201,162,39,0.15);border-color:var(--gold);color:var(--gold);}
+.card-sector{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;font-weight:500;}
+.card-name{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1.1;margin-bottom:3px;padding-right:52px;}
+.card-hq{font-size:10px;color:var(--muted);margin-bottom:16px;}
+.card-tagline{font-size:12px;color:#b8c8e0;line-height:1.6;margin-bottom:20px;}
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 4px 8px;}
+.score-item-value{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;line-height:1;}
+.score-item-value.total{font-size:24px;color:var(--gold);}
+.score-item-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;text-align:center;line-height:1.2;}
+.fit-bar-wrap{margin-bottom:14px;}
+.fit-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;}
+.fit-bar-label{font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);}
+.fit-bar-value{font-size:11px;color:#e8edf8;}
+.fit-bar-track{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.fit-bar-fill{height:100%;border-radius:3px;}
+.fit-fill-green{background:linear-gradient(90deg,#16a34a,#22c55e);}
+.fit-fill-blue{background:linear-gradient(90deg,#1d4ed8,#2d6ef7);}
+.fit-fill-sky{background:linear-gradient(90deg,#0284c7,#38bdf8);}
+.fit-fill-amber{background:linear-gradient(90deg,#b45309,#f59e0b);}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tag{font-size:9.5px;padding:3px 9px;border-radius:99px;}
+.tag-green{background:rgba(22,163,74,0.15);color:#4ade80;border:1px solid rgba(22,163,74,0.25);}
+.tag-amber{background:rgba(217,119,6,0.15);color:#fbbf24;border:1px solid rgba(217,119,6,0.25);}
+.tag-red{background:rgba(220,38,38,0.15);color:#f87171;border:1px solid rgba(220,38,38,0.25);}
+.tag-blue{background:rgba(45,110,247,0.15);color:#93c5fd;border:1px solid rgba(45,110,247,0.25);}
+.tag-muted{background:rgba(136,153,187,0.1);color:var(--muted);border:1px solid rgba(136,153,187,0.15);}
+.bullets{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.bullet{display:flex;gap:8px;align-items:flex-start;font-size:11px;line-height:1.5;color:#c8d8f0;}
+.bullet-icon{flex-shrink:0;font-size:12px;}
+.next-step{margin-top:16px;padding:12px 14px;background:rgba(45,110,247,0.08);border:1px solid rgba(45,110,247,0.18);border-radius:8px;font-size:10.5px;color:#93c5fd;line-height:1.5;}
+.next-step strong{color:#60a5fa;display:block;margin-bottom:3px;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;}
+.card-footer{padding:10px 24px;border-top:1px solid var(--border);font-size:8.5px;color:rgba(136,153,187,0.4);letter-spacing:0.15em;text-transform:uppercase;}</style>
 </head>
 <body>
 <div class="card">
-  <div class="header">
-    <span class="rang">RANG 6</span>
-    <div>
-      <div class="company-name">PowerClaim</div>
-      <div class="header-meta">
-        <span>München, DE</span><span class="dot">·</span>
-        <span>Pre-Seed · €0,8 Mio.</span><span class="dot">·</span>
-        <span>Gegr. 2022</span><span class="dot">·</span>
-        <span>8–15 MA</span><span class="dot">·</span>
-        <span><a href="https://www.powerclaim.de" target="_blank">powerclaim.de ↗</a></span>
-      </div>
-    </div>
-    <div class="header-right">
-      <div class="score-display">
-        <span class="score-num">59</span>
-        <span class="score-denom">/100</span>
-      </div>
-      <span class="badge">✅ Shortlist</span>
-    </div>
-  </div>
-  <div class="body">
-    <div class="left-col">
-      <div>
-        <div class="section-label">Scoring-Profil</div>
-        <div class="radar-wrap"><canvas id="radar"></canvas></div>
-      </div>
-      <div>
-        <div class="section-label">Scores</div>
-        <div class="score-rows">
-          <div class="score-row"><span class="sr-label">Lösungsfit</span><div class="sr-track"><div class="sr-fill" style="width:60.0%"></div></div><span class="sr-val">24/40</span></div>
-          <div class="score-row"><span class="sr-label">Umsetzungsreife</span><div class="sr-track"><div class="sr-fill" style="width:68.0%"></div></div><span class="sr-val">17/25</span></div>
-          <div class="score-row"><span class="sr-label">Vertrauenswürd.</span><div class="sr-track"><div class="sr-fill" style="width:52.0%"></div></div><span class="sr-val">13/25</span></div>
-          <div class="score-row"><span class="sr-label">Marktvalidierung</span><div class="sr-track"><div class="sr-fill" style="width:50.0%"></div></div><span class="sr-val">5/10</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="right-col">
-      <div class="content-block">
-        <div class="block-label">🎯 Unternehmensbeschreibung</div>
-        <div class="block-text">KI-gestützte Energiedaten-Plattform für automatisiertes Reporting und Compliance — Pre-Seed, starker Technologie-Ansatz aber breite Positionierung.</div>
-      </div>
-      <div class="content-block">
-        <div class="block-label">💡 Analyst-Einschätzung</div>
-        <div class="einschaetzung-text">Technologisch solide, aber Lösungsfit leidet unter breiter Positionierung ohne klaren Demand-Response-Fokus. Pre-Seed-Stage erhöht Umsetzungsrisiko signifikant.</div>
-      </div>
-      <div class="content-block">
-        <div class="lf-header">
-          <div class="block-label" style="margin-bottom:0">🎯 Lösungsfit-Aufschlüsselung</div>
-          <span class="lf-total-badge">24 / 40 Pkt.</span>
-        </div>
-        <div class="lf-rows">
-          <div class="lf-row"><span class="lf-code">1A</span><span class="lf-name">Feature Match</span><div class="lf-bar-wrap"><div class="lf-bar-track"><div class="lf-bar-fill" style="width:60.0%"></div></div></div><span class="lf-score">9/15</span><span class="lf-icon">🟡</span><span class="lf-note">Reporting-Fokus · DR-Funktionen partiell</span></div>
-          <div class="lf-row"><span class="lf-code">1B</span><span class="lf-name">Branchenspez. Nachweis</span><div class="lf-bar-wrap"><div class="lf-bar-track"><div class="lf-bar-fill" style="width:60.0%"></div></div></div><span class="lf-score">6/10</span><span class="lf-icon">🟡</span><span class="lf-note">Energie-Branche allgemein · kein Industrie-Fokus</span></div>
-          <div class="lf-row"><span class="lf-code">1C</span><span class="lf-name">Technischer Stack-Fit</span><div class="lf-bar-wrap"><div class="lf-bar-track"><div class="lf-bar-fill" style="width:70.0%"></div></div></div><span class="lf-score">7/10</span><span class="lf-icon">✅</span><span class="lf-note">Moderne API-Architektur · gute Integrationsbasis</span></div>
-          <div class="lf-row"><span class="lf-code">1D</span><span class="lf-name">Use-Case-Bonus</span><div class="lf-bar-wrap"><div class="lf-bar-track"><div class="lf-bar-fill" style="width:40.0%"></div></div></div><span class="lf-score">2/5</span><span class="lf-icon">🔴</span><span class="lf-note">Breite Positionierung · kein DR-Spezialfokus</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <div class="footer-cell fc-staerke"><span class="fc-label">⚡ Stärke</span><span class="fc-text">Starke Technologiebasis und API-Architektur für schnelle Integration.</span></div>
-    <div class="footer-cell fc-risiko"><span class="fc-label">⚠️ Risiko</span><span class="fc-text">Pre-Seed ohne klaren DR-Fokus — Produktanpassung nötig, hohes Umsetzungsrisiko.</span></div>
-    <div class="footer-cell fc-next"><span class="fc-label">→ Nächster Schritt</span><span class="fc-text">Produktfokus auf Demand-Response klären · nur bei überzeugender Roadmap weiterverfolgen.</span></div>
-  </div>
+<div class="card-scorebar"><div class="card-scorebar-fill score-low" style="width:59%"></div></div>
+<div class="card-body">
+<div class="card-rank ">6</div>
+<div class="card-sector">Analytics · Reporting · Compliance</div>
+<div class="card-name">PowerClaim</div>
+<div class="card-hq">📍 Frankfurt, DE · Pre-Seed</div>
+<div class="card-tagline">Automatisierte Energieverbrauchsanalyse und CO₂-Reporting für Compliance-Anforderungen (CSRD, EnEfG).</div>
+<div class="score-row"><div class="score-item"><div class="score-item-value total">59</div><div class="score-item-label">Score /100</div></div><div class="score-item"><div class="score-item-value">24</div><div class="score-item-label">Lösungsfit /40</div></div><div class="score-item"><div class="score-item-value">17</div><div class="score-item-label">Umsetzung /25</div></div><div class="score-item"><div class="score-item-value">13</div><div class="score-item-label">Vertrauen /25</div></div></div>
+<div class="fit-bar-wrap"><div class="fit-bar-header"><span class="fit-bar-label">Lösungsfit</span><span class="fit-bar-value">24 / 40</span></div><div class="fit-bar-track"><div class="fit-bar-fill fit-fill-amber" style="width:60%"></div></div></div>
+<div class="fit-bar-wrap"><div class="fit-bar-header"><span class="fit-bar-label">Marktvalidierung</span><span class="fit-bar-value">5 / 10</span></div><div class="fit-bar-track"><div class="fit-bar-fill fit-fill-amber" style="width:50%"></div></div></div>
+<div class="tags"><span class="tag tag-green">✓ CSRD-ready</span><span class="tag tag-blue">Compliance</span><span class="tag tag-red">✗ Kein Eingriff</span><span class="tag tag-red">✗ Pre-Seed</span></div>
+<ul class="bullets"><li class="bullet"><span class="bullet-icon">⚡</span>Beste Compliance-Abdeckung (CSRD + EnEfG) unter allen Kandidaten</li><li class="bullet"><span class="bullet-icon">⚠</span>Rein analytisch — kein aktiver Steuerungseingriff möglich</li></ul>
+<div class="next-step"><strong>→ Next Step</strong>Nur als Reporting-Ergänzung zu Rang 1–2 evaluieren · Kein Standalone</div>
 </div>
-<script>
-new Chart(document.getElementById('radar').getContext('2d'), {
-  type: 'radar',
-  data: {
-    labels: ['Lösungsfit', 'Umsetzungs-
-reife', 'Vertrauens-
-würdigkeit', 'Markt-
-validierung'],
-    datasets: [{ data: [60.0, 68.0, 52.0, 50.0], backgroundColor: 'rgba(30,79,216,0.12)', borderColor: 'rgba(30,79,216,0.8)', borderWidth: 2, pointBackgroundColor: 'rgba(30,79,216,1)', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6 }]
-  },
-  options: { responsive: true, maintainAspectRatio: true, layout: { padding: 14 }, scales: { r: { min: 0, max: 100, ticks: { display: false, stepSize: 25 }, grid: { color: '#e2e8f0' }, angleLines: { color: '#e2e8f0' }, pointLabels: { font: { family: 'IBM Plex Sans', size: 10, weight: '500' }, color: '#475569', padding: 10 } } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(0)}%` } } } }
-});
-</script>
+<div class="card-footer">VCAS · Agent 2 · BCG Internal · 2025</div>
+</div>
 </body>
 </html>
